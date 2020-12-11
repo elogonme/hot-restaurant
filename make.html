@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/index.css">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/662aff2c8d.js" crossorigin="anonymous"></script>
+    <title>Reservations</title>
+  </head>
+
+  <body>
+    <div class="container">
+        <div class="jumbotron text-center mb-2 py-3">
+            <h1 class="display-4 text-danger"><i class="fab fa-hotjar"></i> Hot Restaurant</h1>
+            <h2 class="display-5 text-primary lead h2">Make your Reservation</h2>
+            <hr class="my-2">
+            <a class="btn btn-primary btn-lg mx-2" href="./tables" role="button"><i class="fas fa-receipt"></i> View Tables</a>
+            <a class="btn btn-outline-secondary btn-lg mx-2" href="./" role="button"><i class="fas fa-home"></i></i></a>
+          </div>
+
+          <div class="text-success text-center" id="reserved">Table Has been reserved</div>
+          <div class="text-danger text-center" id="waitlisted">No more free tables. You are on waitlist!</div>
+
+          <div class="card mb-2">
+            <h5 class="card-header">Table Reservation</h5>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="text" class="form-control" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="id">Unique ID</label>
+                        <input type="text" class="form-control" id="id" name="id">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                  </form>
+            </div>
+          </div>
+            
+          <a class="link" href="./api/tables" role="button">API Tables</a>
+          |
+          <a class="link" href="./api/waitlist" role="button"> API Waitlist</a>
+    </div>
+    
+    <!-- Scripts required to allow some Bootstrap components to work. -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    $(document).ready(() => {
+        $('#reserved').hide();
+        $('#waitlisted').hide()
+
+        $("#submit").on("click", function(event) {
+          event.preventDefault();
+            $('#reserved').hide();
+            $('#waitlisted').hide()
+          // get inputs form elements
+          var newReservation = {
+            name: $("#name").val().trim(),
+            phone: $("#phone").val().trim(),
+            email: $("#email").val().trim(),
+            id: $("#id").val().trim()
+          };
+      
+          console.log(newReservation);
+      
+          $.post("/api/tables", newReservation,
+            function(data) {
+                console.log(data);
+                
+              // If a table is available... tell user they are booked.
+              if (data === 'waitlist') {
+                $('#reserved').hide();
+                $('#waitlisted').show();
+              }
+              // If a table is not available... tell user they on the waiting list.
+              else {
+                $('#reserved').show();
+                $('#waitlisted').hide();
+              }
+      
+              // Clear the form when submitting
+              $("#name").val("");
+              $("#phone").val("");
+              $("#email").val("");
+              $("#id").val("");
+      
+            });
+      
+        });
+    });
+        
+    </script>
+  </body>
+</html>
