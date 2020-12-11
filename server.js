@@ -7,37 +7,11 @@ const { getMaxListeners } = require('process');
 // Sets up the Express App
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Array to store tables
-
-// let tables = [
-//     {
-//         id: '25',
-//         name: 'John Doe',
-//         email: 'john-doe@gmail.com',
-//         phone: '442-234-3456'
-//     },
-//     {
-//         id: '25',
-//         name: 'John Doe',
-//         email: 'john-doe@gmail.com',
-//         phone: '442-234-3456'
-//     }
-// ];
-// let waitlist = [
-//     {
-//         id: '30',
-//         name: 'Amanda Smith',
-//         email: 'amanda@get.com',
-//         phone: '994-443-3456'
-//     },
-    
-// ];
 
 let tables = [];
 let waitlist = [];
