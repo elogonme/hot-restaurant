@@ -7,7 +7,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="assets/css/index.css">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/662aff2c8d.js" crossorigin="anonymous"></script>
     <title>Reservations</title>
@@ -25,6 +24,7 @@
 
           <div class="text-success text-center" id="reserved">Table Has been reserved</div>
           <div class="text-danger text-center" id="waitlisted">No more free tables. You are on waitlist!</div>
+          <div class="text-primary text-center" id="tables-info"></div>
 
           <div class="card mb-2">
             <h5 class="card-header">Table Reservation</h5>
@@ -84,8 +84,6 @@
       
           $.post("/api/tables", newReservation,
             function(data) {
-                console.log(data);
-                
               // If a table is available... tell user they are booked.
               if (data === 'waitlist') {
                 $('#reserved').hide();
@@ -96,7 +94,14 @@
                 $('#reserved').show();
                 $('#waitlisted').hide();
               }
-      
+              let reserved, waiting;
+              $.when(
+                $.get('/api/tables', (data) => reserved = data.length),
+                $.get('/api/waitlist', (data) => waiting = data.length))
+              .done(() => {
+                $('#tables-info').text(`Tables reserved: ${reserved}. Tables on waitlist: ${waiting}`);
+              });
+              
               // Clear the form when submitting
               $("#name").val("");
               $("#phone").val("");

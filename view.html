@@ -7,7 +7,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="assets/css/index.css">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/662aff2c8d.js" crossorigin="anonymous"></script>
     <title>Tables</title>
@@ -22,6 +21,15 @@
             <a class="btn btn-danger btn-lg mx-2" href="./add" role="button"><i class="fas fa-calendar-check"></i> Make Reservation</a>
             <a class="btn btn-outline-secondary btn-lg mx-2" href="./" role="button"><i class="fas fa-home"></i></i></a>
           </div>
+
+          <div class="mb-2">
+            <a class="link" href="#" role="submit" id="clear">Clear Tables</a>
+            |
+            <a class="link" href="./api/tables" role="button">API Tables</a>
+            |
+            <a class="link" href="./api/waitlist" role="button"> API Waitlist</a>
+          </div>
+          
           <!-- Table cards list -->
           <div class="card mb-2">
             <h5 class="card-header">Current Reservations</h5>
@@ -37,11 +45,6 @@
             </div>
           </div>
 
-          <a class="link" href="#" role="submit" id="clear">Clear Tables</a>
-          |
-          <a class="link" href="./api/tables" role="button">API Tables</a>
-          |
-          <a class="link" href="./api/waitlist" role="button"> API Waitlist</a>
     </div>
     
     <!-- Scripts required to allow some Bootstrap components to work. -->
@@ -55,7 +58,6 @@
         $(document).ready(function() {
             // Get tables list and display on page
             $.get('/api/tables', (data) => {
-                console.log(data);
                 $.each(data, (i, val) => {
                     const { id, name, email, phone } = data[i];
                     const $li = `
@@ -75,7 +77,6 @@
             });
             // Get wait list and display on page
             $.get('/api/waitlist', (data) => {
-                console.log(data);
                 $.each(data, (i, val) => {
                     const { id, name, email, phone } = data[i];
                     const $li = `
